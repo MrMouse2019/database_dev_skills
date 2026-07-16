@@ -1,0 +1,92 @@
+﻿版本号,描述,mysql 官方 commit,社区相关讨论
+8.0.28,"The output from EXPLAIN FORMAT=TREE hex-encoded ranges for multi-valued indexes, even if the data type was not a binary one. Strings with non-binary character sets are now printed as plain text, with special characters escaped. (Bug #33343948)","Bug #33343948
+https://github.com/mysql/mysql-server/commit/13245422f6cda0407e4115b3a566f2fb38d445f4",
+8.0.28,"Sorts of some column types, including JSON and TEXT, sometimes exhausted the sort buffer when a single row was too large to fit during the merge phase. (Bug #103325, Bug #105532, Bug #32738705, Bug #33501541)
+
+References: This issue is a regression of: Bug #30400985, Bug #30804356.","Bug #32738705, Bug #33501541
+https://github.com/mysql/mysql-server/commit/27ef5b92c8b26324546cff39b043434470529422
+
+Bug #30400985
+https://github.com/mysql/mysql-server/commit/e0e137031d3246a51bf1ef551bfd0eafa25efcf6
+
+Bug #30804356
+https://github.com/mysql/mysql-server/commit/da8f4d2e3882334a7aa2331da7b4e937087b9f63","Bug #103325
+https://bugs.mysql.com/bug.php?id=103325
+
+Bug #105532
+https://bugs.mysql.com/bug.php?id=105532"
+8.0.28,"JSON: When the first argument passed to JSON_TABLE() was a row instead of a single JSON value, an assertion was raised. MySQL now reports an error during resolving. (Bug #33414235)","Bug #33414235
+https://github.com/mysql/mysql-server/commit/450b21eb400718d2d7f706c6fbb5767cb424af46",
+8.0.28,"Multi-valued indexes were not used for queries executed from within stored functions. (Bug #102359, Bug #32427727)","Bug #32427727
+https://github.com/mysql/mysql-server/commit/ec4af39c22bb26644365a6959b4d26d11634ad47","Bug #102359
+https://bugs.mysql.com/bug.php?id=102359"
+8.0.29,"SELECT COUNT(*) using a multi-valued index reported the wrong number of rows. (Bug #104898, Bug #33334928)","Bug #33334928
+https://github.com/mysql/mysql-server/commit/b478142d3791741b83523091b6af65bc40119818","Bug #104898
+https://bugs.mysql.com/bug.php?id=104898"
+8.0.30,InnoDB: Memory consumption was greater than expected when updating and inserting rows with multi-valued index columns. Memory allocated for multi-value columns is now freed at the end of each statement. (Bug #33766482),"Bug #33766482
+https://github.com/mysql/mysql-server/commit/998c0714a7ac16e1cc9e446d900e64b310e10927",
+8.0.30,InnoDB: A table object needed to retrieve an array of values from a multi-valued index column when computing the value of a generated column was unavailable. (Bug #32725063),"Bug #32725063
+https://github.com/mysql/mysql-server/commit/822dbbabf2e69552040cb4c9b2da4deb1854713a",
+8.0.30,"InnoDB: A query on a table with a JSON column returned only a partial result set after adding a multi-valued index. (Bug #106621, Bug #33917625)","Bug #33917625
+https://github.com/mysql/mysql-server/commit/c3e2e4ca90d581b307d6486c347b09ce7b22f458","Bug #106621
+https://bugs.mysql.com/bug.php?id=106621"
+8.0.32,"With JSON logging enabled, calling the audit_log_rotate() function did not rotate the file as expected. (Bug #34733508)",,
+8.0.33,"With JSON logging enabled and an event subclass specified in the audit log filter definition, an empty item ("""" : { }) was appended to each event in the log. (Bug #34659904)",,
+8.0.34,"JSON: When the result of JSON_VALUE() was an empty string and was assigned to a user variable, the user variable could in some cases be set to NULL. (Bug #35206138)","Bug #35206138
+https://github.com/mysql/mysql-server/commit/03257ee8c908ed658a0ba7d8d3eb63868838650c",
+8.0.34,"JSON: Some JSON schemas were not always processed correctly by JSON_SCHEMA_VALID(). (Bug #109296, Bug #34867398)",,"Bug #109296
+https://bugs.mysql.com/bug.php?id=109296"
+8.0.34,"A query using both MEMBER OF() and ORDER BY DESC returned only a partial result set following the creation of a multi-valued index on a JSON column. This is similar to an issue fixed in MySQL 8.0.30, but with the addition of the ORDER BY DESC clause to the problematic query. (Bug #35012146)
+
+References: See also: Bug #106621, Bug #33917625.","Bug #35012146
+https://github.com/mysql/mysql-server/commit/9183a1d75cc1fc258763d4e91774edb90a910492
+
+Bug #33917625
+https://github.com/mysql/mysql-server/commit/c3e2e4ca90d581b307d6486c347b09ce7b22f458","Bug #106621
+https://bugs.mysql.com/bug.php?id=106621"
+8.0.35,"Some DESCRIBE statements using FORMAT = JSON were not always processed correctly, and sometimes raised assertions in debug builds. (Bug #34909766)","Bug #34909766
+https://github.com/mysql/mysql-server/commit/1062b5f77721bb37831c389cce99896922c37bf4",
+8.0.37,"JSON: JOIN and GROUP BY handled some JSON column values differently. (Bug #101048, Bug #31969607)","Bug #31969607
+https://github.com/mysql/mysql-server/commit/fa9aa5eab1827dbf0de979f647d4479db113391d","Bug #101048
+https://bugs.mysql.com/bug.php?id=101048"
+8.0.37,"When running queries against a table with a multi-value index, the server sometimes exited unexpectedly, often while executing a complex SELECT query which used this index. (Bug #35789759)","Bug #35789759
+https://github.com/mysql/mysql-server/commit/1f9f651ef6834317ccd7be4ddabb464c974808e6",
+8.0.38,"Replication: If a source contained a stored generated column populated by a JSON function and binlog_row_image was set to MINIMAL, any subsequent update or deletion on the underlying base column failed with an Invalid JSON text error. (Bug #36515172)","Bug #36515172
+https://github.com/mysql/mysql-server/commit/37619695800343a31e9e76d396012c4a0831422a",
+8.0.38,"JSON: Added missing checks for error handling to NULLIF(), COALESCE(), and the shift (>>) operator. (Bug #113668, Bug #35513196, Bug #36198403)
+
+References: See also: Bug #31358416.","Bug #35513196
+https://github.com/mysql/mysql-server/commit/3365adad4c24fceee0dd75934e225899edc4f99d","Bug #113668
+https://bugs.mysql.com/bug.php?id=113668"
+8.0.38,"Under certain conditions, EXPLAIN FORMAT=JSON FOR CONNECTION sometimes led to an unplanned exit. (Bug #36189820)","Bug #36189820
+https://github.com/mysql/mysql-server/commit/01a808161cbc1603a456ff6f48eb017c4370c2d1",
+8.0.40,"When executing an index range scan using IndexRangeScanIterator the record buffer was never set due to the fact that the data type used for IndexRangeScanIterator::m_expected_rows had been changed from double to boolean during refactoring. This unintended change has been reverted.
+
+In addition, when the record buffer was enabled for index range scans a problem arose with multi-valued indexes used for covering these scans. (This is possible only when they are used as part of index merge scans, since index merge scans force covering index scans.) The source of the problem was that the implementation of Field_typed_array::key_cmp() needs the value of the generated column for the indexed expression, and this column is not available in the multi-valued index, so the storage engine cannot safely evaluate the end range condition when filling the record buffer for a covering scan. To fix this, we now disable the record buffer when multi-valued indexes are used for covering index range scans. (Bug #36775910)
+
+References: See also: Bug #36341532.","Bug #36775910
+https://github.com/mysql/mysql-server/commit/57b6d0d3d3c6c4ea3d057396b86c0554ec333f79
+
+Bug #36341532
+https://github.com/mysql/mysql-server/commit/7a090498b66e204a6ea2304c328cf7e49c09eb81",
+8.0.40,"A query using a greater-than (>) or less-than (<) comparison with a multi-valued index executed much more slowly than the same query using an equality (=) comparison with the same index. (Bug #104897, Bug #33334911)","Bug #33334911
+https://github.com/mysql/mysql-server/commit/d2ab06a8c658e849af4d18e73580e176b68ae6cc","Bug #104897
+https://bugs.mysql.com/bug.php?id=104897"
+8.0.42,The Audit Log plugin did not handle errors correctly when writing JSON output. (Bug #37370439),,
+8.0.42,"A negative impact in performance was observed when using a multivalued index with ORDER BY DESC and LIMIT in a query, where the value specified by LIMIT was greater than the number of rows actually in the result. (Bug #117085, Bug #37436310)
+
+References: This issue is a regression of: Bug #104897, Bug #33334911.","Bug #37436310
+https://github.com/mysql/mysql-server/commit/5daa0c7c4dd579bc9a2c42703e0891baffef9de8
+
+Bug #33334911
+https://github.com/mysql/mysql-server/commit/d2ab06a8c658e849af4d18e73580e176b68ae6cc","Bug #117085
+https://bugs.mysql.com/bug.php?id=117085
+
+Bug #104897
+https://bugs.mysql.com/bug.php?id=104897"
+8.0.44,Fixed an issue relating to SQL queries involving correlated scalar subqueries and JSON tables. (Bug #36684370),"Bug #36684370
+https://github.com/mysql/mysql-server/commit/100c5e71b263a4bec7bbabbc5671c85be53505dd",
+8.0.46,Fixed an issue relating to multi-value indexes. (Bug #39040128),"Bug #39040128
+https://github.com/mysql/mysql-server/commit/f1deaf1f827b6e0113eb70d6c343903852313dfa",
+8.0.46,Fixed an issue relating to processing of JSON files. (Bug #39000847),"Bug #39000847
+https://github.com/mysql/mysql-server/commit/34af58d16c08c8b5424b9f58ac2065bca85c54d3",

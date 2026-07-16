@@ -1,0 +1,4 @@
+interface:
+  display_name: "Database Source Wiki"
+  short_description: "Build evidence-tracked database source-code wikis"
+  default_prompt: "Use $database-source-wiki to design and build a source-grounded wiki for this database repository."

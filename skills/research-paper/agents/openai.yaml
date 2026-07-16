@@ -1,0 +1,4 @@
+interface:
+  display_name: "论文深度解读"
+  short_description: "将研究论文深度解读为适合飞书云文档公开发布的中文个人技术文章"
+  default_prompt: "使用 $research-paper 深度解读这篇论文，并输出适合飞书云文档发布的个人技术文章。"
