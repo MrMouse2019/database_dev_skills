@@ -70,7 +70,7 @@ python3 /Users/zhangxiahao/.codex/skills/.system/skill-creator/scripts/init_skil
   --path . \
   --resources references \
   --interface 'display_name=论文深度解读' \
-  --interface 'short_description=将研究论文解读为可公开发表的中文技术文章' \
+  --interface 'short_description=将研究论文深度解读为适合飞书云文档公开发布的中文个人技术文章' \
   --interface 'default_prompt=使用 $research-paper 深度解读这篇论文，并输出适合飞书云文档发布的个人技术文章。'
 ```
 
@@ -113,9 +113,9 @@ Expected: it describes white or light backgrounds, low-saturation grouped colors
 - [ ] **Step 4: Regenerate UI metadata from the final skill**
 
 ```bash
-python3 /Users/zhangxiahao/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py research-paper \
+python3 /Users/zhangxiahao/.codex/skills/.system/skill-creator/scripts/generate_openai_yaml.py research-paper --name research-paper \
   --interface 'display_name=论文深度解读' \
-  --interface 'short_description=将研究论文解读为可公开发表的中文技术文章' \
+  --interface 'short_description=将研究论文深度解读为适合飞书云文档公开发布的中文个人技术文章' \
   --interface 'default_prompt=使用 $research-paper 深度解读这篇论文，并输出适合飞书云文档发布的个人技术文章。'
 ```
 
@@ -152,15 +152,24 @@ publication gate: fact, citation, copyright, tone, and layout review
 
 Expected: the original analytical depth is preserved while the new output and publication constraints are explicit.
 
-- [ ] **Step 2: Run the skill validator**
+- [ ] **Step 2: Prepare the validator's temporary dependency**
 
 ```bash
-python3 /Users/zhangxiahao/.codex/skills/.system/skill-creator/scripts/quick_validate.py research-paper
+python3 -m pip install --target /tmp/codex-skill-validator-deps PyYAML
+```
+
+Expected: PyYAML is installed only under `/tmp`; the repository and system Python remain unchanged.
+
+- [ ] **Step 3: Run the skill validator**
+
+```bash
+PYTHONPATH=/tmp/codex-skill-validator-deps \
+  python3 /Users/zhangxiahao/.codex/skills/.system/skill-creator/scripts/quick_validate.py research-paper
 ```
 
 Expected: validator reports the skill is valid.
 
-- [ ] **Step 3: Run the GREEN content-contract assertions**
+- [ ] **Step 4: Run the GREEN content-contract assertions**
 
 ```bash
 test -f research-paper/SKILL.md \
@@ -175,7 +184,7 @@ test -f research-paper/SKILL.md \
 
 Expected: exit code 0.
 
-- [ ] **Step 4: Run repository hygiene checks**
+- [ ] **Step 5: Run repository hygiene checks**
 
 ```bash
 git diff --check
@@ -184,7 +193,7 @@ git status --short
 
 Expected: no whitespace errors; only the implementation plan, updated prompt, and new `research-paper` skill files are in scope.
 
-- [ ] **Step 5: Commit the implementation**
+- [ ] **Step 6: Commit the implementation**
 
 ```bash
 git add docs/superpowers/plans/2026-07-16-research-paper-skill.md \
