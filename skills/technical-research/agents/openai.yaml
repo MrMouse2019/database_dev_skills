@@ -1,0 +1,4 @@
+interface:
+  display_name: "技术主题深度调研"
+  short_description: "综合论文、源码、开源系统与工业产品，生成经过验证的飞书技术调研报告"
+  default_prompt: "使用 $technical-research 对这个技术主题进行深度调研，并创建包含架构图、流程图、方案比较和证据说明的飞书云文档。"
