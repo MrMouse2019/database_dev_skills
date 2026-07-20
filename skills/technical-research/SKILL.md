@@ -16,7 +16,7 @@ description: Use when researching a database, distributed-systems, AI Infra, sto
 
 ## 确认范围
 
-- 要求技术主题；按默认值补齐时间、读者、论文、产品、长度和分析重点。
+- 要求技术主题；按默认值补齐时间、论文、产品、长度和分析重点；默认读者为“数据库、分布式系统或 AI Infra 研发人员”。
 - 只有缺失信息会实质改变结论时才追问。
 - 定义工作定义、相邻边界、评价维度、时间截点和非目标。
 
