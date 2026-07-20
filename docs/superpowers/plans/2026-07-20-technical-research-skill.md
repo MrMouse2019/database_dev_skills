@@ -43,6 +43,7 @@
 - Create as ignored test evidence: `.superpowers/sdd/baseline-database.md`
 - Create as ignored test evidence: `.superpowers/sdd/baseline-distributed.md`
 - Create as ignored test evidence: `.superpowers/sdd/baseline-ai-infra.md`
+- Create as ignored execution record: `.superpowers/sdd/baseline-execution.md`
 - Create as ignored synthesis: `.superpowers/sdd/baseline-findings.md`
 
 **Interfaces:**
@@ -51,7 +52,7 @@
 
 - [ ] **Step 1: Run three fresh-context baseline scenarios without the skill**
 
-Dispatch independent read-only agents for learned cardinality estimation, consensus membership changes, and continuous batching. Tell each agent that no specialized topic-research skill is available. Ask it to describe exactly how it would execute the request, including authorization, evidence classification, visuals, Feishu creation, and completion criteria. Write each unedited response to the corresponding baseline file.
+Dispatch independent read-only agents for learned cardinality estimation, consensus membership changes, and continuous batching. Tell each agent that no specialized topic-research skill is available. Ask it to describe exactly how it would execute the request, including authorization, evidence classification, visuals, Feishu creation, and completion criteria. Write each unedited response to the corresponding baseline file. Create `baseline-execution.md` recording the exact scenario purpose, task name (`baseline_database`, `baseline_distributed`, or `baseline_ai_infra`), the fresh-context/read-only/no-`technical-research` constraint, and the fact that each raw output was written unedited; do not invent timestamps or runtime facts.
 
 - [ ] **Step 2: Synthesize only observed omissions and rationalizations**
 
@@ -62,7 +63,7 @@ Create `baseline-findings.md` with one row per scenario and these columns:
 | --- | --- | --- | --- | --- | --- | --- |
 ```
 
-Record only behavior present in the baseline responses. Do not infer a failure that was not observed.
+Record only behavior present in the baseline responses. Do not infer a failure that was not observed. Do not count intentionally unexecuted research, Feishu mutation, or post-write readback as a baseline gap. Include a `Regression acceptance criteria` section that maps every observed shape or contract gap to a GREEN check for Tasks 1-5, and state that actual Feishu write/readback is deferred to Task 5.
 
 - [ ] **Step 3: Verify RED evidence exists before implementation**
 
@@ -73,7 +74,9 @@ test ! -e skills/technical-research
 test -s .superpowers/sdd/baseline-database.md
 test -s .superpowers/sdd/baseline-distributed.md
 test -s .superpowers/sdd/baseline-ai-infra.md
+test -s .superpowers/sdd/baseline-execution.md
 test -s .superpowers/sdd/baseline-findings.md
+rg -F 'Regression acceptance criteria' .superpowers/sdd/baseline-findings.md
 ```
 
 Expected: all checks pass and at least one concrete gap is documented. If all baselines already satisfy the contract, stop and reconsider whether a new skill is justified.
