@@ -7,3 +7,4 @@
 | Database Source Wiki | `$database-source-wiki` | `skills/database-source-wiki/` |
 | Formatting Markdown for Feishu | `$formatting-markdown-for-feishu` | `skills/formatting-markdown-for-feishu/` |
 | 论文深度解读 | `$research-paper` | `skills/research-paper/` |
+| 技术主题深度调研 | `$technical-research` | `skills/technical-research/` |
