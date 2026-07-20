@@ -37,6 +37,47 @@
 | `prompt_templates/technical-research/prompt_template.md` | Standalone prompt derived from the supplied technical-research template |
 | `README.md` | Invocation index entry for the new skill |
 
+### Task 0: Capture Baseline Behavior Without the New Skill
+
+**Files:**
+- Create as ignored test evidence: `.superpowers/sdd/baseline-database.md`
+- Create as ignored test evidence: `.superpowers/sdd/baseline-distributed.md`
+- Create as ignored test evidence: `.superpowers/sdd/baseline-ai-infra.md`
+- Create as ignored synthesis: `.superpowers/sdd/baseline-findings.md`
+
+**Interfaces:**
+- Consumes: three topic-research requests and the repository state before `skills/technical-research/` exists.
+- Produces: observable baseline omissions that Tasks 1-3 must address and Task 5 must retest.
+
+- [ ] **Step 1: Run three fresh-context baseline scenarios without the skill**
+
+Dispatch independent read-only agents for learned cardinality estimation, consensus membership changes, and continuous batching. Tell each agent that no specialized topic-research skill is available. Ask it to describe exactly how it would execute the request, including authorization, evidence classification, visuals, Feishu creation, and completion criteria. Write each unedited response to the corresponding baseline file.
+
+- [ ] **Step 2: Synthesize only observed omissions and rationalizations**
+
+Create `baseline-findings.md` with one row per scenario and these columns:
+
+```markdown
+| Scenario | Authorization gate | Evidence classes | Domain correctness | Required visuals | Feishu回读 | Observed rationalization |
+| --- | --- | --- | --- | --- | --- | --- |
+```
+
+Record only behavior present in the baseline responses. Do not infer a failure that was not observed.
+
+- [ ] **Step 3: Verify RED evidence exists before implementation**
+
+Run:
+
+```bash
+test ! -e skills/technical-research
+test -s .superpowers/sdd/baseline-database.md
+test -s .superpowers/sdd/baseline-distributed.md
+test -s .superpowers/sdd/baseline-ai-infra.md
+test -s .superpowers/sdd/baseline-findings.md
+```
+
+Expected: all checks pass and at least one concrete gap is documented. If all baselines already satisfy the contract, stop and reconsider whether a new skill is justified.
+
 ### Task 1: Initialize the Skill and Add the Research Evidence Layer
 
 **Files:**
