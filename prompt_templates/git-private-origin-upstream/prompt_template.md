@@ -188,4 +188,3 @@ git status --short --branch
 7. 仍未验证的状态、原始错误和下一条可执行命令。
 
 不要仅复述计划，也不要在缺少命令输出时声称 clone、remote 迁移或 push 已成功。
-

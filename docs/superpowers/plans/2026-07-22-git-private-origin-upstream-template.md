@@ -44,4 +44,3 @@ Run `git diff --check`, inspect `git diff --stat`, and confirm no unrelated file
 - [ ] **Step 4: Commit the template and plan**
 
 Commit with `feat(prompt_templates): add private origin workflow` after all checks pass.
-
