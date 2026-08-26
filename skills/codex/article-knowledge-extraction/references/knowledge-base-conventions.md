@@ -61,7 +61,7 @@ traceability:
   source_title: "Article title or unavailable"
   source_author_or_publisher: "Author or publisher or unavailable"
   source_published_or_edited_at: "Available date or unavailable"
-  codex_task_id: "unavailable"
+  codex_task_id: "<current Codex session ID>"
   codex_task_title: "unavailable"
   codex_task_share_url: "unavailable"
 related:
@@ -106,7 +106,7 @@ sources:
   - "Publisher and canonical URL"
 traceability:
   source_url: "https://canonical.example/article"
-  codex_task_id: "unavailable"
+  codex_task_id: "<current Codex session ID>"
   codex_task_title: "unavailable"
   codex_task_share_url: "unavailable"
 related:
@@ -122,13 +122,13 @@ Create no concept page when the article has insufficient reusable knowledge. Do 
 
 ## Codex traceability boundary
 
-Always record the canonical source URL and source metadata available from the article. For Codex task traceability, record only fields that the current runtime exposes directly in the task context:
+Always record the canonical source URL and source metadata available from the article. During actual Codex execution, proactively obtain the current session/task ID from the current runtime task/session context—the same value exposed by Codex’s **Copy session ID** action—even when the prompt does not contain it. Record traceability with the repository-supported fields:
 
-- `codex_task_id`;
-- `codex_task_title`;
-- `codex_task_share_url`.
+- `codex_task_id`: required; write the exact current Codex session/task ID;
+- `codex_task_title`: write the runtime-exposed title or `unavailable`;
+- `codex_task_share_url`: write the runtime-exposed share URL or `unavailable`.
 
-Write `unavailable` for every missing field. Never inspect `~/.codex`, application databases, task histories, logs, caches, hidden files, environment secrets, or other private stores to infer a value. Never invent a convenient title or derive a share URL. User-supplied values may be recorded only with their provenance clear.
+Never replace `codex_task_id` with a new `codex_session_id` alias. If actual Codex execution cannot obtain the current ID from the runtime, stop before knowledge-base writes and report the blocker; do not degrade the required ID to `unavailable`. A plan, dry run, or test premise may state that runtime metadata is unavailable, but a later actual execution must retrieve its own current ID. Never inspect `~/.codex`, application databases, task histories, logs, caches, hidden files, environment secrets, or other private stores to infer a value. Never invent a convenient title or derive a share URL. User-supplied values may be recorded only with their provenance clear.
 
 Do not commit runtime databases, task files, logs, credentials, tokens, or acquisition caches to the knowledge base. Concept pages copy the same exposed traceability values from their source note when the adjacent schema requires standalone traceability.
 

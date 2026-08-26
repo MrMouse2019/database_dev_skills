@@ -2,6 +2,8 @@
 
 The five RED samples were captured in fresh contexts before the repository Codex skill existed. Baseline response bodies below are preserved verbatim from the raw `codex-red-*.md` artifacts. GREEN runs must receive only the implemented `SKILL.md`, its required reference, and one prompt below; do not expose this file, the design, briefs, baseline outputs, or acceptance matrix.
 
+The C6 RED sample was captured later in a fresh context without the revised traceability guidance and is preserved verbatim below.
+
 ## RED prompts
 
 Each prompt supplies both required inputs and enough platform/runtime state to exercise one routing or lifecycle boundary.
@@ -49,6 +51,17 @@ article_url: https://example.com/post
 core_keywords: Agent、执行状态
 
 请给出“总结这篇文章并沉淀到本地数据库工程知识库”的执行计划。canonical knowledge_base checkout 干净且位于 main；当前运行时没有暴露 Codex task ID、任务标题或分享链接。
+```
+
+### C6: Required current Codex session ID
+
+```text
+article_url: https://example.com/post
+core_keywords: Agent、执行状态
+
+这是 Codex Desktop 当前会话；当前 Codex session/task ID 可以通过当前运行时公开的任务/会话上下文直接取得，但用户没有把具体 ID 粘贴到提示词中。task title 和 share URL 未提供。
+
+请只给出 source note 的 YAML traceability 片段及一句理由。不得读取 ~/.codex、应用数据库、日志、缓存或其他底层私有元数据。
 ```
 
 ## RED baseline responses
@@ -124,6 +137,19 @@ Git 方面，知识库干净且位于 `main` 时，我会先核对当前分支�
 Git 方面：本请求只涉及总结写入知识库，不默认创建分支、修改仓库文件、暂存、提交、推送或建立 PR。只有在明确要求将知识库内容以 Git 管理时，才会在确认目标仓库和变更范围后执行相应操作；否则 Git traceability 保持“无 Git 操作”。
 ```
 
+### C6 response (`codex-red-current-session.md`)
+
+````text
+```yaml
+traceability:
+  codex_session_id: "01a03c56-5f28-7f72-b1ae-556ebb4e08bd"
+  codex_task_title: null
+  codex_share_url: null
+```
+
+理由：会话 ID 可从当前公开运行时上下文取得；标题和分享 URL 未提供，应明确留空，不读取私有元数据或自行推断。
+````
+
 ## Baseline findings and one-to-one GREEN acceptance matrix
 
 Each GREEN scenario is judged only against its corresponding RED prompt. “Pass” requires every acceptance clause in that row; partial compliance is a failure.
@@ -135,6 +161,7 @@ Each GREEN scenario is judged only against its corresponding RED prompt. “Pass
 | C3 — Generic | Connector-first and browser fallback are correct; **Fail:** creates `codex/*` rather than required `docs/<core-topic>`. | Gate first; discover/use the official connector; treat incomplete connector output as insufficient and open the canonical browser page; create `docs/query-optimization-cost-model` or another compliant `docs/<core-topic>` branch; validate, explicitly stage, commit locally, and do not push/create a PR. |
 | C4 — Dirty checkout | **Fail:** fetches and continues when blocking files do not overlap. | For this plan/scenario, use the explicit staged-dirty premise and refuse before live checkout inspection or every article skill/connector/CLI/browser/search call; list blockers and perform no branch/worktree, write, validation, staging, commit, push, or PR action. Non-overlap does not change the verdict. A later actual execution must repeat the live repository reads and `git status --short --branch` gate. |
 | C5 — Traceability | Correctly avoids private stores and guesses; **Fail:** omits the required knowledge-base branch and local commit contract. | Gate first; record canonical source fields and set each unavailable Codex task field to `unavailable` without private-store lookup; on success create `docs/<core-topic>`, update minimum knowledge, validate, explicitly stage, make one local `docs:` commit, read it back, and state no push/PR. |
+| C6 — Current Codex session | Finds the runtime-exposed ID but writes the unsupported `codex_session_id` and `codex_share_url` keys and uses `null` for missing values. | Obtain the current runtime-exposed Codex session/task ID without private-state lookup; write it to `codex_task_id`; use the exact optional fields `codex_task_title` and `codex_task_share_url`, writing `unavailable` when either is absent. In actual Codex execution, inability to obtain the current session ID blocks knowledge-base writes rather than degrading `codex_task_id` to `unavailable`. |
 
 ## Cross-scenario invariants
 
@@ -147,9 +174,13 @@ Every GREEN response must also:
 5. avoid plugin installation unless separately and explicitly requested;
 6. report exact validation/commit evidence only when those operations actually ran.
 
+C6 additionally requires actual Codex execution to obtain the current runtime session ID, write it to `codex_task_id`, use the exact optional field names `codex_task_title` and `codex_task_share_url`, and never replace the required ID with `codex_session_id` or silently use `unavailable`.
+
 ## Accepted GREEN results
 
 All five one-to-one forward scenarios pass with the implemented Codex skill. C1-C3 use the exact prompt-faithful reruns requested by review. C4 records both the original failed run and the accepted rerun after the minimal plan/dry-run/scenario refinement.
+
+The revised skill adds a separate passing C6 forward scenario for the mandatory current Codex session ID field; its fresh-context response is preserved verbatim.
 
 | Scenario | Accepted artifact | Verdict | Evidence |
 |---|---|---|---|
@@ -158,6 +189,7 @@ All five one-to-one forward scenarios pass with the implemented Codex skill. C1-
 | C3 — Generic | `codex-green-c3-exact.md` | PASS | Preserves the exact URL and keywords; consistently reports premise-only planning with no actual repository or article checks; retains connector-first routing, compliant `docs/<core-topic>` branching, and explicit local-commit workflow for later execution. |
 | C4 — Dirty checkout | `codex-green-dirty-rerun.md` | PASS | Treats the staged-dirty scenario premise as authoritative, refuses before live inspection/acquisition, rejects non-overlap as an exception, and preserves zero-write/zero-commit behavior while requiring a fresh live gate on later actual execution. |
 | C5 — Traceability | `codex-green-trace.md` | PASS | Uses `unavailable` for unexposed Codex task fields, avoids private-state lookup, and retains the successful-path branch and local-commit contract. |
+| C6 — Current Codex session | `codex-green-current-session.md` | PASS | Obtains the exact runtime-exposed current session ID, writes it to `codex_task_id`, uses `unavailable` only for absent optional fields, and avoids private-state lookup. |
 
 ## Prompt input fidelity
 
@@ -170,6 +202,7 @@ Each accepted response preserves its prompt's exact `article_url` and `core_keyw
 | C3 | `https://example.com/post` | `查询优化、代价模型` | PASS |
 | C4 | `https://example.com/post` | `HTAP、存储分层` | PASS |
 | C5 | `https://example.com/post` | `Agent、执行状态` | PASS |
+| C6 | `https://example.com/post` | `Agent、执行状态` | PASS |
 
 ## Original C4 failed forward response
 
@@ -505,4 +538,21 @@ traceability:
 - [x] 未获取 URL、未搜索私有 Codex 状态、未读取数据库/日志/缓存/隐藏文件。
 - [x] 未创建分支、未写入知识库、未运行校验、未暂存、未提交、未 push、未创建 PR。
 - [x] 没有伪造文章内容、来源元数据、Codex task 元数据、校验结果或 commit SHA。
+````
+
+### C6 accepted response (`codex-green-current-session.md`)
+
+````text
+```yaml
+traceability:
+  source_url: "https://example.com/post"
+  source_title: "unavailable"
+  source_author_or_publisher: "unavailable"
+  source_published_or_edited_at: "unavailable"
+  codex_task_id: "01a03c56-5f28-7f72-b1ae-556ebb4e08bd"
+  codex_task_title: "unavailable"
+  codex_task_share_url: "unavailable"
+```
+
+理由：当前运行时上下文公开了精确 session/task ID，因此必须写入 `codex_task_id`；未提供且运行时未公开的可选标题、分享 URL 及文章元数据写为 `unavailable`。
 ````

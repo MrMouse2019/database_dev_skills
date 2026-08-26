@@ -80,7 +80,7 @@ Search `articles/`, `concepts/`, `index.md`, and `concepts/index.md` for the tit
 - Update the necessary navigation and reverse links so new pages are not orphaned.
 - Do not modify `feishu/`, `sync/feishu-manifest.json`, or generated `graphify-out/` artifacts.
 
-Use only source metadata and Codex task metadata exposed by the current runtime. Write `unavailable` for unavailable task ID, title, or share URL. Never search private stores, local databases, logs, caches, or hidden runtime files to recover identifiers.
+Before any knowledge-base write during actual Codex execution, obtain the current session/task ID from the current runtime task/session context—the same ID exposed by Codex’s **Copy session ID** action—even when the user did not paste it into the prompt. Write that exact value to the existing `codex_task_id` field; never introduce a `codex_session_id` alias. This ID is mandatory: if the current runtime cannot provide it, stop before writing and report the traceability blocker instead of using `unavailable`. Use runtime-exposed values for `codex_task_title` and `codex_task_share_url`, or write `unavailable` when either optional value is absent. Never search private stores, local databases, logs, caches, hidden runtime files, or environment secrets to recover identifiers.
 
 Before writing, run `git status --short --branch` again. If non-task changes appeared, stop without overwriting them.
 
@@ -117,6 +117,8 @@ If the gate or acquisition fails, report only completed read-only checks, the bl
 - “Use `codex/<topic>` in the knowledge base.”
 - “Open the browser before invoking an installed matching skill.”
 - “`ContentText`, metadata, or a search summary is the complete article.”
+- “Write `codex_task_id: unavailable` during actual Codex execution without first obtaining the current runtime session ID.”
+- “Use `codex_session_id` instead of the repository-supported `codex_task_id` field.”
 - “Search private Codex state to recover traceability.”
 - “Knowledge preservation does not require a local commit.”
 - “Install a useful plugin, push, or create a PR without a separate explicit request.”
