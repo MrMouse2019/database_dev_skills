@@ -1,0 +1,4 @@
+interface:
+  display_name: "Article Knowledge Extraction"
+  short_description: "Read articles and preserve evidence-bounded knowledge"
+  default_prompt: "Use $article-knowledge-extraction with an article URL and core keywords to summarize it and preserve reusable knowledge locally."
