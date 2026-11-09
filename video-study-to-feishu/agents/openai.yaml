@@ -1,0 +1,4 @@
+interface:
+  display_name: "视频学习笔记 → 飞书"
+  short_description: "将各类视频整理为突出主旨、章节、关键画面与问答的飞书学习笔记"
+  default_prompt: "使用 $video-study-to-feishu 将这个视频整理为飞书云文档，突出核心主旨和章节，完整保留重要画面与问答。"
