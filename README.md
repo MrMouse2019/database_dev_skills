@@ -10,3 +10,4 @@
 | 技术主题深度调研 | `$technical-research` | `skills/technical-research/` |
 | Article Knowledge Extraction (WorkBuddy) | `$article-knowledge-extraction` | `skills/workbuddy/article-knowledge-extraction/` |
 | Article Knowledge Extraction (Codex) | `$article-knowledge-extraction` | `skills/codex/article-knowledge-extraction/` |
+| 视频学习笔记 → 飞书 | `$video-study-to-feishu` | `video-study-to-feishu/` |
